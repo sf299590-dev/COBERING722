@@ -42,16 +42,28 @@ box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 """, unsafe_allow_html=True)
 
 # 2. INIT GEE (Menggunakan Token Notebook yang Sudah Kamu Save via Terminal)
-@st.cache_resource
-def init_ee():
-    try:
-        ee.Initialize(project='coral-monitoring-prd')
-        return True
-    except Exception as local_err:
-        st.error(f"Gagal Inisialisasi Earth Engine: {local_err}")
-        return False
+import streamlit as st
+import ee
 
-init_ee()
+# Fungsi untuk inisialisasi GEE menggunakan Service Account dari Streamlit Secrets
+def initialize_gee():
+    try:
+        # Mengambil informasi credentials dari secrets streamlit
+        credentials_info = st.secrets["EARTHENGINE_TOKEN"]
+        
+        # Menggunakan ServiceAccountCredentials dari modul ee
+        credentials = ee.ServiceAccountCredentials(
+            credentials_info["client_email"], 
+            key_data=credentials_info["private_key"]
+        )
+        
+        # Inisialisasi dengan kredensial service account
+        ee.Initialize(credentials)
+    except Exception as e:
+        st.error(f"Gagal Inisialisasi Earth Engine: {e}")
+
+# Panggil fungsi inisialisasi sebelum memuat peta
+initialize_gee()
 
 # 3. SIDEBAR
 with st.sidebar:
