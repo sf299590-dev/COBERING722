@@ -6,7 +6,7 @@ import streamlit as st
 import ee
 import folium
 from streamlit_folium import folium_static
-import datetime
+import datetime	
 
 # 1. TEMA & CSS
 st.set_page_config(page_title="COBERING-722", page_icon="🪸", layout="wide")
@@ -106,7 +106,7 @@ display_img, vis_params = get_gee_data(date_input, coords, mode_peta)
 
 with st.container(border=True):
     st.write(f"**Peta Wilayah:** {lokasi_pilihan} ({mode_peta})")
-    m = folium.Map(location=coords, zoom_start=13 if mode_peta == "Sentinel-2" else 9)
+    m = folium.Map(location=coords, zoom_start=13 if mode_peta == "Sentinel-2" else 6)
 
     if display_img:
         try:
@@ -180,3 +180,4 @@ with inf3:
         st.markdown('<div class="info-card info-orange"> 🔍  Kriteria: Anomali &le; 0°C. Suhu perairan terpantau normal atau lebih dingin dari rata-rata historisnya.</div>', unsafe_allow_html=True)
 with inf4:
     st.markdown('<div class="info-card info-blue"> 🌏  Karakteristik: Rata-rata suhu permukaan laut Indonesia cenderung hangat dan berada di atas 26°C disebabkan oleh letak astronomisnya.</div>', unsafe_allow_html=True)
+
